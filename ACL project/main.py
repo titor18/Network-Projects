@@ -29,7 +29,7 @@ def get_main_routers():
             to be configured.
 
     """
-    router_ips = open("test.txt")
+    router_ips = open("Main Routers.txt")
     routers_list = [x.replace('\n', '') for x in router_ips.readlines()]
     return routers_list
 
