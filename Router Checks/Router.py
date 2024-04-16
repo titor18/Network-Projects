@@ -4,7 +4,7 @@ from napalm import get_network_driver
 from netmiko import ConnectHandler
 #imports the templates needed to parse with ttp the commands
 #that cannot be parsed with textfsm
-import templates
+from templates import *
 
 class Router:
     output_dict = {}
@@ -84,7 +84,7 @@ class Router:
             Router.get_interface_role(self, command_results["interface_information"])
             command_results["lan_config"] = net_connect.send_command(f"show run interface {self.lan_interface}")
             command_results["wan_config"] = net_connect.send_command(f"show run interface {self.wan_interface}")
-            command_results["flow_exporter_information"] = net_connect.send_command("show flow exporter", use_ttp=True, ttp_template=templates.flow_template_4331)
+            command_results["flow_exporter_information"] = net_connect.send_command("show flow exporter", use_ttp=True, ttp_template=flow_template_4331)
         return command_results
 
 
