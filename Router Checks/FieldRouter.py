@@ -1,7 +1,7 @@
 from re import match
 import Router
 from netmiko import ConnectHandler
-import templates
+from templates import bfd_template
 
 class FieldRouter(Router):
     BGP_DOWN_STATES = ("Idle", "Connect", "Active")
@@ -14,7 +14,7 @@ class FieldRouter(Router):
     def execute_commands(self):
         results = super().execute_commands()
         with ConnectHandler(**self.handler) as net_connect:
-            results["bfd_status"] = net_connect.send_command("show bfd neighbor", use_ttp=True, ttp_template=templates.bfd_template)
+            results["bfd_status"] = net_connect.send_command("show bfd neighbor", use_ttp=True, ttp_template=bfd_template)
             for variable,command in Router.command_dict[1].items():
                 results[variable] = net_connect.send_command(command, use_textfsm=True)
         return results
