@@ -1,6 +1,6 @@
 import Router
 from netmiko import ConnectHandler
-import templates
+from templates import radio_template
 
 class CellRouter(Router):
     def __init__(self, ip_address, credentials):
@@ -10,7 +10,7 @@ class CellRouter(Router):
     def execute_commands(self):
         results = super().execute_commands()
         with ConnectHandler(**self.handler) as net_connect:
-            radio_output = net_connect.send_command("Show cellular 0/1/0 radio", use_ttp=True, ttp_template=templates.radio_template)
+            radio_output = net_connect.send_command("Show cellular 0/1/0 radio", use_ttp=True, ttp_template=radio_template)
             results["cell_levels"] = radio_output
         return results
 
