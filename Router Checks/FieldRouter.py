@@ -1,5 +1,5 @@
 from re import match
-import Router
+from Router import Router
 from netmiko import ConnectHandler
 from templates import bfd_template
 
