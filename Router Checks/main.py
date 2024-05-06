@@ -4,7 +4,8 @@ with the required network assurance parameters, and also checks the operational
 status of protocols like BGP, VRRP, and BFD.
 """
 from getpass import getpass
-import Router
+from FieldRouter import FieldRouter
+from CellRouter import CellRouter
 
 def execute_router_commands(device):
     router_facts = device.execute_commands()
@@ -14,7 +15,7 @@ def execute_router_commands(device):
     device.flow_exporter_validator(router_facts["wan_config"], router_facts["flow_exporter_information"])
     device.snmp_validator(router_facts["snmp_servers_information"])
     device.acl_validator(router_facts["acls_information"])
-    if isinstance(device, Router.FieldRouter):
+    if isinstance(device, FieldRouter):
         device.bgp_status(router_facts["bgp_info"][0])
         device.bfd_status(router_facts["bfd_status"])
         device.policy_map_checker(router_facts["policy_map"], router_facts["policy_map_interface"])
@@ -22,7 +23,7 @@ def execute_router_commands(device):
         device.ise_servers_validator(router_facts["tacacs_information"])
         for if_type, interface_config in [("LAN", router_facts["lan_config"]), ("WAN", router_facts["wan_config"])]:
             device.speed_duplex_validator(interface_config, if_type)
-    elif isinstance(device, Router.CellRouter):
+    elif isinstance(device, CellRouter):
         device.snmp_validator(router_facts["cell_levels"])
 
 if __name__ == "__main__":
@@ -41,7 +42,7 @@ if __name__ == "__main__":
     device_ip = input("Please enter the IP address of the router to check: ")
     username = input("Please enter your username: ")
     password = getpass("Please enter your password: ")
-    router_class = Router.FieldRouter if router_type == '2' else Router.CellRouter
+    router_class = FieldRouter if router_type == '2' else CellRouter
     router = router_class(device_ip, {"username": username, "password": password})
     
     execute_router_commands(router)
