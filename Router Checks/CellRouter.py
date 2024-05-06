@@ -1,4 +1,4 @@
-import Router
+from Router import Router
 from netmiko import ConnectHandler
 from templates import radio_template
 
